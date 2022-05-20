@@ -2,7 +2,6 @@
 const fs = require('fs');
 const path = require('path');
 const x = path.join(__dirname,'text.txt');
-// console.log(x);
 const stream = fs.ReadStream( x,'utf-8');
 let data = '';
 

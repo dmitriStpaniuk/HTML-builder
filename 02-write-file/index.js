@@ -1,40 +1,31 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
+const process = require("process");
+// import process from 'process';
 
-fs.writeFile(path.join(__dirname, 'notes.txt'),'', (err) => {
-  if (err) throw err;
-  console.log(' - файл notes.txt создан');
-});
-const readline = require('readline').createInterface({
+const readline = require("readline").createInterface({
   input: process.stdin,
   output: process.stdout,
 });
-readline.question('Write you message', (message) => {
-  if(message === 'exit'){
-    console.log('bye bye');
+fs.writeFile(path.join(__dirname, "notes.txt"), "", (err) => {
+  if (err) throw err;
+  console.log("файл notes.txt создан, ждем ввода текста");
+});
+
+process.openStdin().on("keypress", function (ff, key) {
+  if (key && key.name === "c" && key.ctrl) {
+    console.log("bye bye");
     process.exit();
   }
-  console.log(`Сообщене '${message}' принято, записываем данные в файл `);
-  // readline.close();
+});
 
-  fs.appendFile(path.resolve(__dirname,'notes.txt'), message, err =>{
-    if(err)console.log(err);
-    else{
-      console.log('все гуд записано');
-    }
+readline.on("line", (input) => {
+  if(input === 'exit'){
+    console.log("bye bye");
+    process.exit();
+  }
+  fs.appendFile(path.resolve(__dirname, "notes.txt"), input + "\n", (err) => {
+    if (err) throw err;
   });
+  console.log(`Received: ${input} - записано, продолжаем:`);
 });
-
-process.openStdin().on('keypress', function(_, key) {
-  if(key && key.name === 'c' && key.ctrl) {
-    console.log('bye bye');
-    process.exit();
-  }
-});
-if (process.stdin.isTTY) {
-  process.stdin.setRawMode(true);
-}
-
-if (process.stdin.isTTY) {
-  process.stdin.setRawMode(true);
-}
