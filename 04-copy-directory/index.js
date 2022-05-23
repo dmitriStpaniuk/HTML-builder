@@ -4,22 +4,20 @@ const path = require('path');
 const getFixturePath = path.join(__dirname, 'files'); //?
 const getOutputPath = path.join(__dirname, './files-copy'); //?
 
-const dir = () => {
+const copyDir = () => {
   fs.access(getOutputPath, (err) => {
-    if (err) {
-      console.log('Creating files-copy folder...');
-      copyDir();
-    } else {
+    if (!err) {
       fs.rm(getOutputPath, { recursive: true }, (err) => {
         if (err) console.log(err);
-        copyDir();
+        dir();
       });
+    } else {
+      dir();
     }
   });
 };
 
-const copyDir = () => {
-
+const dir = () => {
   fs.access(getOutputPath, (err) => {
     if (err) {
       fs.mkdir(getOutputPath, (err) => {
@@ -28,7 +26,6 @@ const copyDir = () => {
     }
     fs.readdir(getFixturePath, (err, files) => {
       if (err) console.log(err);
-
       files.map((i) => {
         fs.copyFile(
           getFixturePath + '/' + i,
@@ -37,9 +34,8 @@ const copyDir = () => {
             if (err) console.log(err);
           }
         );
-      }); //?
+      });
     });
   });
 };
-dir();
-
+copyDir();
