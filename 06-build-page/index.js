@@ -55,7 +55,6 @@ const copyDir = async (main, assets) => {
 
 const replaceHtml = async () => {
   try {
-
     const readStreamHtml = fs.createReadStream(templatePath);
     const rl = readline.createInterface({
       input: readStreamHtml,
@@ -63,9 +62,8 @@ const replaceHtml = async () => {
     });
     const writableStream = fs.createWriteStream(htmlPath);
     for await (const line of rl) {
-      // Each line in input.txt will be successively available here as `line`.
-      console.log(`Line from file: ${line}`);
       const match = line.match(/{{\w*}}/g);
+      writableStream.write('\n');
       if (match) {
         const file = await readFile(path.join(components, `${match[0].slice(2, -2)}.html`), 'utf-8');
         writableStream.write(file);

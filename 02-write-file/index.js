@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const process = require('process');
-// import process from 'process';
 
 const readline = require('readline').createInterface({
   input: process.stdin,
@@ -20,7 +19,7 @@ process.openStdin().on('keypress', function (_, key) {
 });
 
 readline.on('line', (input) => {
-  if(input === 'exit'){
+  if (input === 'exit') {
     console.log('bye bye');
     process.exit();
   }
